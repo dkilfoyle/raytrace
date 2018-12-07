@@ -13,6 +13,10 @@ export default class Matte extends Material {
     this.ambient_brdf = new Lambertian();
     this.diffuse_brdf = new Lambertian();
   }
+  set_cd(c: RGBColor): void {
+    this.ambient_brdf.cd = c.clone();
+    this.diffuse_brdf.cd = c.clone();
+  }
   shade(w: World, sr: ShadeRec): RGBColor {
     const wo: Vector3D = sr.intersection.ray.d.clone().reverse();
     const L: RGBColor = this.ambient_brdf.rho(sr, wo).product(w.ambient.L(sr));

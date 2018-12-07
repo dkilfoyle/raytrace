@@ -23,7 +23,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import ImageCanvas from "./components/ImageCanvas.vue";
-import MyWorld from "./Raytrace/MyWorldOrtho";
+import MyWorldOrtho from "./Raytrace/MyWorldOrtho";
+import MyWorldPerspective from "./Raytrace/MyWorldPerspective";
 
 @Component({
   components: {
@@ -35,7 +36,7 @@ export default class App extends Vue {
     imageCanvas: ImageCanvas;
   };
   onRayTraceButton() {
-    let myWorld = new MyWorld();
+    let myWorld = new MyWorldPerspective();
     myWorld.build();
     myWorld.render_scene(this.$refs.imageCanvas);
 

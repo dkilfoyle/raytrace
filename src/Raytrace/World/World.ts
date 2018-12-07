@@ -34,14 +34,13 @@ export default abstract class World {
 
   hit_objects(ray: Ray): ShadeRec {
     let sr: ShadeRec = new ShadeRec();
-    let normal: Vector3D;
-    let local_hit_point: Point3D;
     let tmin: number = 1.0e10;
     let intersection: Intersection = new Intersection();
 
     for (let j = 0; j < this.objects.length; j++) {
       if (this.objects[j].hit(ray, intersection) && intersection.t < tmin) {
-        sr.intersection.clone(intersection);
+        sr.intersection.cloneFrom(intersection);
+        sr.intersection.ray = ray.clone();
         tmin = intersection.t;
         sr.material = this.objects[j].material;
       }

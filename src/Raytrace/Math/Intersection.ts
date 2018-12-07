@@ -13,7 +13,7 @@ export default class Intersection {
   t: number = 0;
 
   constructor() {}
-  clone(c: Intersection) {
+  cloneFrom(c: Intersection) {
     this.hit_an_object = c.hit_an_object;
     this.hit_point = c.hit_point.clone();
     this.local_hit_point = c.local_hit_point.clone();

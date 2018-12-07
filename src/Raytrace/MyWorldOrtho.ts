@@ -9,7 +9,6 @@ import SingleSphere from "./Tracers/SingleSphere";
 export default class MyWorldOrtho extends World {
   constructor() {
     super();
-    console.log("MyWorldOrtho");
   }
   build(): void {
     this.background_color = new RGBColor(0.1, 0.1, 0.1);

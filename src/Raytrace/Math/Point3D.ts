@@ -17,6 +17,9 @@ export default class Point3D {
   clone(): Point3D {
     return new Point3D(this.x, this.y, this.z);
   }
+  cloneVector(): Vector3D {
+    return new Vector3D(this.x, this.y, this.z);
+  }
 
   d_squared(p: Point3D): number {
     return (

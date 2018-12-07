@@ -64,6 +64,10 @@ export default class Vector3D {
     return this;
   }
 
+  divideScalar(scalarValue: number): Vector3D {
+    return this.multiplyScalar(1 / scalarValue);
+  }
+
   add(otherVector: Vector3D): Vector3D {
     this.x += otherVector.x;
     this.y += otherVector.y;

@@ -15,7 +15,7 @@ export default class PinHole extends Camera {
       .clone()
       .multiplyScalar(p.x)
       .add(this.v.clone().multiplyScalar(p.y))
-      .add(this.w.clone().multiplyScalar(this.d))
+      .subtract(this.w.clone().multiplyScalar(this.d))
       .normalize();
     return dir;
   }
@@ -27,7 +27,7 @@ export default class PinHole extends Camera {
     let n = Math.sqrt(w.vp.num_samples);
     let s = w.vp.s / this.zoom;
 
-    ray.o = this.eye;
+    ray.o = this.eye.clone();
     for (let r: number = 0; r < w.vp.vres; r++) {
       //  up row
       for (let c: number = 0; c < w.vp.hres; c++) {
@@ -41,7 +41,8 @@ export default class PinHole extends Camera {
             pp.x = s * (c - 0.5 * w.vp.hres + (q + 0.5) / n);
             pp.y = s * (r - 0.5 * w.vp.vres + (p + 0.5) / n);
             ray.d = this.get_direction(pp);
-            L.add(w.tracer.trace_ray(w, ray, depth));
+            let l = w.tracer.trace_ray(w, ray, depth);
+            L.add(l);
           }
 
           L.multiply(1.0 / w.vp.num_samples);

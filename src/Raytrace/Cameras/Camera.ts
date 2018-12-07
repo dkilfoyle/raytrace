@@ -7,11 +7,11 @@ export default abstract class Camera {
   eye: Point3D = new Point3D();
   lookat: Point3D = new Point3D();
   ra: number = 0;
-  u: Vector3D = new Vector3D();
-  v: Vector3D = new Vector3D();
-  w: Vector3D = new Vector3D();
-  up: Vector3D = new Vector3D();
-  exposure_time: number = 0;
+  u: Vector3D = new Vector3D(1, 0, 0);
+  v: Vector3D = new Vector3D(0, 1, 0);
+  w: Vector3D = new Vector3D(0, 0, 1);
+  up: Vector3D = new Vector3D(0, 1, 0);
+  exposure_time: number = 1.0;
   constructor() {}
   abstract render_scene(w: World, pixel_drawer: PixelDrawer): void;
   compute_uvw(): void {
