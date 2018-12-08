@@ -5,7 +5,9 @@ import Intersection from "../Math/Intersection";
 
 export default abstract class GeometricObject {
   material!: Material;
-  constructor() {
+  name: string;
+  constructor(name: string = "GeometricObject") {
+    this.name = name;
     this.material = new Material();
   }
   abstract hit(ray: Ray, intersection: Intersection): boolean;

@@ -31,6 +31,7 @@ export default abstract class World {
   }
   abstract build(): void;
   abstract render_scene(pixel_drawer: PixelDrawer): void;
+  abstract render_pixel(pixel_drawer: PixelDrawer, x: number, y: number): void;
 
   hit_objects(ray: Ray): ShadeRec {
     let sr: ShadeRec = new ShadeRec();

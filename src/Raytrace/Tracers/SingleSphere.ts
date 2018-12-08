@@ -11,7 +11,7 @@ export default class SingleSphere extends Tracer {
   sphere: Sphere;
   constructor() {
     super();
-    this.sphere = new Sphere(new Point3D(0, 0, 0), 85.0);
+    this.sphere = new Sphere("SingleSphere", new Point3D(0, 0, 0), 85.0);
   }
   trace_ray(world: World, ray: Ray): RGBColor {
     let intersection: Intersection = new Intersection();

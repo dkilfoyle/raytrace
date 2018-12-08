@@ -1,5 +1,5 @@
 <template>
-  <canvas id="canvas" ref="canvas" :height="h" :width="w"></canvas>
+  <canvas id="canvas" ref="canvas" :height="h" :width="w" @click="onClick"></canvas>
 </template>
 
 <script lang="ts">
@@ -17,23 +17,25 @@ export default class ImageCanvas extends Vue implements PixelDrawer {
     canvas: HTMLCanvasElement;
   };
 
-  mounted() {
-    this.ctx = this.$refs.canvas.getContext("2d") as CanvasRenderingContext2D;
+  clearScreen() {
     this.screen = this.ctx.createImageData(this.w, this.h);
+    this.screen.data.fill(0);
+    console.log(this.screen.data[0]);
   }
 
-  myrender(num: number) {}
+  mounted() {
+    this.ctx = this.$refs.canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.clearScreen();
+  }
 
-  drawBuffer(buffer: ArrayBuffer): void {
-    var buf8 = new Uint8ClampedArray(buffer);
-    this.screen = this.ctx.getImageData(0, 0, this.w, this.h);
-    this.screen.data.set(buf8);
-    this.ctx.putImageData(this.screen, 0, 0);
+  onClick(e: MouseEvent) {
+    // pass offsetX and offsetY as event to App.vue for sending to world
+    this.$emit("onImageClick", e);
   }
 
   draw_pixel(x: number, y: number, r: number, g: number, b: number): void {
     let index = (x + y * this.screen.width) * 4;
-    if (x < 10 && y < 10) {
+    if (x < 5 && y < 5) {
       this.screen.data[index + 0] = 200;
       this.screen.data[index + 1] = 0;
       this.screen.data[index + 2] = 0;

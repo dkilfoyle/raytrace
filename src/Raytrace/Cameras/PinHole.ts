@@ -53,4 +53,36 @@ export default class PinHole extends Camera {
       }
     }
   }
+  render_pixel(
+    w: World,
+    pixel_drawer: PixelDrawer,
+    x: number,
+    y: number
+  ): void {
+    let L: RGBColor;
+    let ray: Ray = new Ray();
+    let depth: number = 0;
+    let pp: Point2D = new Point2D();
+    let n = Math.sqrt(w.vp.num_samples);
+    let s = w.vp.s / this.zoom;
+
+    let r = y;
+    let c = x;
+
+    ray.o = this.eye.clone();
+
+    L = new RGBColor(0, 0, 0);
+
+    pp.x = s * (c - 0.5 * w.vp.hres + 0.5 / n);
+    pp.y = s * (r - 0.5 * w.vp.vres + 0.5 / n);
+    ray.d = this.get_direction(pp);
+    console.log("Camera Ray: ", ray);
+    let l = w.tracer.trace_ray(w, ray, depth);
+    console.log("Render Pixel Color: ", l);
+    L.add(l);
+
+    L.multiply(this.exposure_time);
+    L.maxToOne();
+    pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
+  }
 }

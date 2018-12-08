@@ -14,6 +14,12 @@ export default abstract class Camera {
   exposure_time: number = 1.0;
   constructor() {}
   abstract render_scene(w: World, pixel_drawer: PixelDrawer): void;
+  abstract render_pixel(
+    w: World,
+    pixel_drawer: PixelDrawer,
+    x: number,
+    y: number
+  ): void;
   compute_uvw(): void {
     this.w = this.eye
       .clone()

@@ -18,6 +18,9 @@ export default class MyWorldPerspective extends World {
     super();
   }
   build(): void {
+    this.lights = [];
+    this.objects = [];
+
     this.vp = new ViewPlane(200, 200, 1.0);
     this.background_color = new RGBColor(0.1, 0.1, 0.1);
     this.tracer = new RayCast();
@@ -47,16 +50,18 @@ export default class MyWorldPerspective extends World {
     // plane.material = matte1;
     // this.objects.push(plane);
 
+    let sphere = new Sphere("SphereBlue", new Point3D(0, 0, 0), 85);
     let matte2 = new Matte();
     matte2.ambient_brdf.kd = 0.25;
     matte2.diffuse_brdf.kd = 0.75;
     matte2.set_cd(new RGBColor(0, 0, 1));
-
-    let sphere = new Sphere(new Point3D(0, 0, 0), 85);
     sphere.material = matte2;
     this.objects.push(sphere);
   }
   render_scene(pixel_drawer: PixelDrawer): void {
     this.camera.render_scene(this, pixel_drawer);
+  }
+  render_pixel(pixel_drawer: PixelDrawer, x: number, y: number): void {
+    this.camera.render_pixel(this, pixel_drawer, x, y);
   }
 }

@@ -8,7 +8,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <image-canvas ref="imageCanvas"></image-canvas>
+          <image-canvas ref="imageCanvas" @onImageClick="onImageClick"></image-canvas>
         </div>
       </div>
       <div class="row">
@@ -32,21 +32,17 @@ import MyWorldPerspective from "./Raytrace/MyWorldPerspective";
   }
 })
 export default class App extends Vue {
+  myWorld = new MyWorldPerspective();
   $refs!: {
     imageCanvas: ImageCanvas;
   };
   onRayTraceButton() {
-    let myWorld = new MyWorldPerspective();
-    myWorld.build();
-    myWorld.render_scene(this.$refs.imageCanvas);
-
-    // create ray tracer
-    // var rayTracer = new RayTracer(backgroundColor, scene);
-    // let buffer = rayTracer.render(200, 200, 0, 200);
-
-    // this.$refs.imageCanvas.drawBuffer(buffer);
-    // (<ImageCanvas>this.$refs.imageCanvas)
-    // .drawBuffer(buffer);
+    this.$refs.imageCanvas.clearScreen();
+    this.myWorld.build();
+    this.myWorld.render_scene(this.$refs.imageCanvas);
+  }
+  onImageClick(e: MouseEvent) {
+    this.myWorld.render_pixel(this.$refs.imageCanvas, e.offsetX, e.offsetY);
   }
 }
 </script>

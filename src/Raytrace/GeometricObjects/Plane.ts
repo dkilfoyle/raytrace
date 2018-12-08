@@ -6,10 +6,11 @@ import Vector3D from "../Math/Vector3D";
 
 export default class Plane extends GeometricObject {
   constructor(
+    name: string = 'Plane';
     public a: Point3D = new Point3D(),
     public n: Vector3D = new Vector3D()
   ) {
-    super();
+    super(name);
   }
   hit(ray: Ray, intersection: Intersection): boolean {
     let t: number = this.a

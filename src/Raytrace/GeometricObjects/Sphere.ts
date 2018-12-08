@@ -7,8 +7,8 @@ import Intersection from "../Math/Intersection";
 export default class Sphere extends GeometricObject {
   center: Point3D;
   radius: number;
-  constructor(center: Point3D, radius: number) {
-    super();
+  constructor(name: string = "Sphere", center: Point3D, radius: number) {
+    super(name);
     this.center = center.clone();
     this.radius = radius;
   }

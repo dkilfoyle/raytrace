@@ -14,6 +14,7 @@ export default class MyWorldOrtho extends World {
     this.background_color = new RGBColor(0.1, 0.1, 0.1);
     this.tracer = new SingleSphere();
   }
+  render_pixel(pixel_drawer: PixelDrawer, x: number, y: number): void {}
   render_scene(pixel_drawer: PixelDrawer): void {
     let pixel_color: RGBColor;
     let ray: Ray = new Ray();
