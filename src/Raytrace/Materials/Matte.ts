@@ -18,6 +18,7 @@ export default class Matte extends Material {
     this.diffuse_brdf.cd = c.clone();
   }
   shade(w: World, sr: ShadeRec): RGBColor {
+    if (window.bDebug) console.group("Material.shade: ", sr);
     const wo: Vector3D = sr.intersection.ray.d.clone().reverse();
     const L: RGBColor = this.ambient_brdf.rho(sr, wo).product(w.ambient.L(sr));
 
@@ -26,6 +27,8 @@ export default class Matte extends Material {
       let ndotwi: number = sr.intersection.normal.dotProduct(wi);
 
       if (ndotwi > 0.0) {
+        if (window.bDebug)
+          console.log("Visible light: ", j, ", ndotwi: ", ndotwi);
         L.add(
           this.diffuse_brdf
             .f(sr, wo, wi)
@@ -34,6 +37,8 @@ export default class Matte extends Material {
         );
       }
     }
+
+    if (window.bDebug) console.groupEnd();
     return L;
   }
 }

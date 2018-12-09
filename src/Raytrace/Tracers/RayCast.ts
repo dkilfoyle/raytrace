@@ -9,12 +9,18 @@ export default class RayCast extends Tracer {
     super();
   }
   trace_ray(world: World, ray: Ray): RGBColor {
+    if (window.bDebug) console.group("RayCast trace_ray");
     const sr: ShadeRec = world.hit_objects(ray);
 
+    let raycastcolor: RGBColor;
+
     if (sr.intersection.hit_an_object) {
-      return sr.material.shade(world, sr);
+      raycastcolor = sr.material.shade(world, sr);
     } else {
-      return world.background_color;
+      raycastcolor = world.background_color;
     }
+
+    if (window.bDebug) console.groupEnd();
+    return raycastcolor;
   }
 }

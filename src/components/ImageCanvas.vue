@@ -20,7 +20,6 @@ export default class ImageCanvas extends Vue implements PixelDrawer {
   clearScreen() {
     this.screen = this.ctx.createImageData(this.w, this.h);
     this.screen.data.fill(0);
-    console.log(this.screen.data[0]);
   }
 
   mounted() {

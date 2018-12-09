@@ -10,10 +10,16 @@ export default class Lambertian extends BRDF {
     super();
   }
   f(sr: ShadeRec, wo: Vector3D, wi: Vector3D): RGBColor {
-    return this.cd
+    let freturn = this.cd
       .clone()
       .multiply(this.kd)
       .multiply(this.invPI);
+    if (window.bDebug) {
+      console.group("LambertianBRDF: ", this);
+      console.log("f = ", freturn);
+      console.groupEnd();
+    }
+    return freturn;
   }
   rho(sr: ShadeRec, wo: Vector3D): RGBColor {
     return this.cd.clone().multiply(this.kd);

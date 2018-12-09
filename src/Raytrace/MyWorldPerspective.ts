@@ -62,6 +62,8 @@ export default class MyWorldPerspective extends World {
     this.camera.render_scene(this, pixel_drawer);
   }
   render_pixel(pixel_drawer: PixelDrawer, x: number, y: number): void {
+    window.bDebug = true;
     this.camera.render_pixel(this, pixel_drawer, x, y);
+    window.bDebug = false;
   }
 }

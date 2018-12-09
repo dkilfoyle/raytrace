@@ -5,6 +5,7 @@ import RGBColor from "./RGBColor";
 import Material from "../Materials/Material";
 
 export default class Intersection {
+  name: string = "";
   hit_an_object: boolean = false;
   hit_point: Point3D = new Point3D();
   local_hit_point: Point3D = new Point3D();
@@ -14,6 +15,7 @@ export default class Intersection {
 
   constructor() {}
   cloneFrom(c: Intersection) {
+    this.name = c.name;
     this.hit_an_object = c.hit_an_object;
     this.hit_point = c.hit_point.clone();
     this.local_hit_point = c.local_hit_point.clone();

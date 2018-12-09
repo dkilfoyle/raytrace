@@ -12,6 +12,16 @@ export default class Vector3D {
     this.z = z;
   }
 
+  toString(): string {
+    return (
+      this.x.toPrecision(4) +
+      "," +
+      this.y.toPrecision(4) +
+      "," +
+      this.z.toPrecision(4)
+    );
+  }
+
   clone(): Vector3D {
     return new Vector3D(this.x, this.y, this.z);
   }

@@ -76,13 +76,13 @@ export default class PinHole extends Camera {
     pp.x = s * (c - 0.5 * w.vp.hres + 0.5 / n);
     pp.y = s * (r - 0.5 * w.vp.vres + 0.5 / n);
     ray.d = this.get_direction(pp);
-    console.log("Camera Ray: ", ray);
+    if (bDebug) console.group("Camera Ray", ray);
     let l = w.tracer.trace_ray(w, ray, depth);
-    console.log("Render Pixel Color: ", l);
     L.add(l);
-
     L.multiply(this.exposure_time);
     L.maxToOne();
+    if (bDebug) console.log("Render Pixel Color: ", L);
     pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
+    if (bDebug) console.groupEnd();
   }
 }

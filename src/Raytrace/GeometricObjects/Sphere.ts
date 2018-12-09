@@ -30,6 +30,7 @@ export default class Sphere extends GeometricObject {
       t = (-b - e) / denom; // smaller root
 
       if (t > 0.0001) {
+        intersection.name = this.name;
         intersection.t = t;
         intersection.ray = ray;
         intersection.hit_an_object = true;
@@ -46,6 +47,7 @@ export default class Sphere extends GeometricObject {
       t = (-b + e) / denom; // larger root
 
       if (t > 0.0001) {
+        intersection.name = this.name;
         intersection.t = t;
         intersection.ray = ray;
         intersection.hit_an_object = true;

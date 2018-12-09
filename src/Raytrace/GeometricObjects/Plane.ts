@@ -6,7 +6,7 @@ import Vector3D from "../Math/Vector3D";
 
 export default class Plane extends GeometricObject {
   constructor(
-    name: string = 'Plane';
+    name: string = "Plane",
     public a: Point3D = new Point3D(),
     public n: Vector3D = new Vector3D()
   ) {
@@ -21,6 +21,7 @@ export default class Plane extends GeometricObject {
       );
 
     if (t > 0.00001) {
+      intersection.name = this.name;
       intersection.t = t;
       intersection.hit_an_object = true;
       intersection.normal = this.n;
