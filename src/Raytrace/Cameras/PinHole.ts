@@ -7,6 +7,8 @@ import Vector3D from "../Math/Vector3D";
 import PixelDrawer from "../PixelDrawer";
 
 export default class PinHole extends Camera {
+  r: number = 0;
+  c: number = 0;
   constructor(public d: number = 0, public zoom: number = 1.0) {
     super();
   }
@@ -19,7 +21,11 @@ export default class PinHole extends Camera {
       .normalize();
     return dir;
   }
-  render_scene(world: World, pixel_drawer: PixelDrawer): void {
+
+  prepare_scene(world: World, pixel_drawer: PixelDrawer): void {
+    this.r = 0;
+  }
+  render_lines(world: World, pixel_drawer: PixelDrawer): void {
     let L: RGBColor;
     let ray: Ray = new Ray();
     let depth: number = 0;
@@ -29,8 +35,8 @@ export default class PinHole extends Camera {
     let s = world.vp.s / this.zoom;
 
     ray.o = this.eye.clone();
-    for (let r: number = 0; r < world.vp.vres; r++) {
-      //  up row
+
+    while (true) {
       for (let c: number = 0; c < world.vp.hres; c++) {
         // across column
         L = new RGBColor(0, 0, 0);
@@ -39,7 +45,7 @@ export default class PinHole extends Camera {
         for (let p = 0; p < world.vp.num_samples; p++) {
           sp = world.vp.sampler.sample_unit_square();
           pp.x = s * (c - 0.5 * world.vp.hres + sp.x);
-          pp.y = s * (r - 0.5 * world.vp.vres + sp.y);
+          pp.y = s * (this.r - 0.5 * world.vp.vres + sp.y);
 
           ray.d = this.get_direction(pp);
           let l = world.tracer.trace_ray(world, ray, depth);
@@ -49,10 +55,27 @@ export default class PinHole extends Camera {
         L.multiply(1.0 / world.vp.num_samples);
         L.multiply(this.exposure_time);
         L.maxToOne();
-        pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
+        pixel_drawer.draw_pixel(c, this.r, L.r, L.g, L.b);
+      }
+
+      ++this.r;
+
+      if (this.r % 10 == 0 || this.r == pixel_drawer.h) {
+        pixel_drawer.draw_screen();
+        if (this.r < pixel_drawer.h)
+          window.requestAnimationFrame(() =>
+            this.render_lines(world, pixel_drawer)
+          );
+        break;
       }
     }
   }
+
+  render_scene(world: World, pixel_drawer: PixelDrawer): void {
+    this.prepare_scene(world, pixel_drawer);
+    this.render_lines(world, pixel_drawer);
+  }
+
   render_pixel(
     w: World,
     pixel_drawer: PixelDrawer,

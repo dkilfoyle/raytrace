@@ -13,6 +13,9 @@ export default abstract class Camera {
   up: Vector3D = new Vector3D(0, 1, 0);
   exposure_time: number = 1.0;
   constructor() {}
+
+  abstract prepare_scene(w: World, pixel_drawer: PixelDrawer): void;
+  abstract render_lines(w: World, pixel_drawer: PixelDrawer): void;
   abstract render_scene(w: World, pixel_drawer: PixelDrawer): void;
   abstract render_pixel(
     w: World,
@@ -20,6 +23,7 @@ export default abstract class Camera {
     x: number,
     y: number
   ): void;
+
   compute_uvw(): void {
     this.w = this.eye
       .clone()
