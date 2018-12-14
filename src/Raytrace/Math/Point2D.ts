@@ -7,6 +7,13 @@ export default class Point2D {
     this.y = y;
   }
 
+  get_coord(coord: string): number {
+    if (coord === "x") return this.x;
+    if (coord === "y") return this.y;
+    console.log("error get_coord is not x or y");
+    return 0;
+  }
+
   clone(): Point2D {
     return new Point2D(this.x, this.y);
   }

@@ -19,37 +19,37 @@ export default class PinHole extends Camera {
       .normalize();
     return dir;
   }
-  render_scene(w: World, pixel_drawer: PixelDrawer): void {
+  render_scene(world: World, pixel_drawer: PixelDrawer): void {
     let L: RGBColor;
     let ray: Ray = new Ray();
     let depth: number = 0;
     let pp: Point2D = new Point2D();
-    let n = Math.sqrt(w.vp.num_samples);
-    let s = w.vp.s / this.zoom;
+    let sp: Point2D;
+    let n = Math.sqrt(world.vp.num_samples);
+    let s = world.vp.s / this.zoom;
 
     ray.o = this.eye.clone();
-    for (let r: number = 0; r < w.vp.vres; r++) {
+    for (let r: number = 0; r < world.vp.vres; r++) {
       //  up row
-      for (let c: number = 0; c < w.vp.hres; c++) {
+      for (let c: number = 0; c < world.vp.hres; c++) {
         // across column
         L = new RGBColor(0, 0, 0);
 
-        for (let p: number = 0; p < n; p++) {
-          //up pixel
-          for (let q: number = 0; q < n; q++) {
-            // across pixel
-            pp.x = s * (c - 0.5 * w.vp.hres + (q + 0.5) / n);
-            pp.y = s * (r - 0.5 * w.vp.vres + (p + 0.5) / n);
-            ray.d = this.get_direction(pp);
-            let l = w.tracer.trace_ray(w, ray, depth);
-            L.add(l);
-          }
+        // anti-alias by sampling the ray direction
+        for (let p = 0; p < world.vp.num_samples; p++) {
+          sp = world.vp.sampler.sample_unit_square();
+          pp.x = s * (c - 0.5 * world.vp.hres + sp.x);
+          pp.y = s * (r - 0.5 * world.vp.vres + sp.y);
 
-          L.multiply(1.0 / w.vp.num_samples);
-          L.multiply(this.exposure_time);
-          L.maxToOne();
-          pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
+          ray.d = this.get_direction(pp);
+          let l = world.tracer.trace_ray(world, ray, depth);
+          L.add(l);
         }
+
+        L.multiply(1.0 / world.vp.num_samples);
+        L.multiply(this.exposure_time);
+        L.maxToOne();
+        pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
       }
     }
   }
@@ -76,13 +76,13 @@ export default class PinHole extends Camera {
     pp.x = s * (c - 0.5 * w.vp.hres + 0.5 / n);
     pp.y = s * (r - 0.5 * w.vp.vres + 0.5 / n);
     ray.d = this.get_direction(pp);
-    if (bDebug) console.group("Camera Ray", ray);
+    if (window.bDebug) console.group("Camera Ray", ray);
     let l = w.tracer.trace_ray(w, ray, depth);
     L.add(l);
     L.multiply(this.exposure_time);
     L.maxToOne();
-    if (bDebug) console.log("Render Pixel Color: ", L);
+    if (window.bDebug) console.log("Render Pixel Color: ", L);
     pixel_drawer.draw_pixel(r, c, L.r, L.g, L.b);
-    if (bDebug) console.groupEnd();
+    if (window.bDebug) console.groupEnd();
   }
 }

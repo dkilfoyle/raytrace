@@ -33,6 +33,10 @@ export default class ImageCanvas extends Vue implements PixelDrawer {
   }
 
   draw_pixel(x: number, y: number, r: number, g: number, b: number): void {
+    // apply gamma correction for linear brightness
+    let gamma = 2.2;
+    let invGamma = 1 / 2.2;
+
     let index = (x + y * this.screen.width) * 4;
     if (x < 5 && y < 5) {
       this.screen.data[index + 0] = 200;
@@ -40,9 +44,9 @@ export default class ImageCanvas extends Vue implements PixelDrawer {
       this.screen.data[index + 2] = 0;
       this.screen.data[index + 3] = 255;
     } else {
-      this.screen.data[index + 0] = r * 255;
-      this.screen.data[index + 1] = g * 255;
-      this.screen.data[index + 2] = b * 255;
+      this.screen.data[index + 0] = Math.pow(r, invGamma) * 255;
+      this.screen.data[index + 1] = Math.pow(g, invGamma) * 255;
+      this.screen.data[index + 2] = Math.pow(b, invGamma) * 255;
       this.screen.data[index + 3] = 255;
     }
     this.ctx.putImageData(this.screen, 0, 0);

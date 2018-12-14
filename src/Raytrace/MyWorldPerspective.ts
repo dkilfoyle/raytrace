@@ -21,7 +21,7 @@ export default class MyWorldPerspective extends World {
     this.lights = [];
     this.objects = [];
 
-    this.vp = new ViewPlane(200, 200, 1.0);
+    this.vp = new ViewPlane(200, 200, 1.0, 25);
     this.background_color = new RGBColor(0.1, 0.1, 0.1);
     this.tracer = new RayCast();
 
