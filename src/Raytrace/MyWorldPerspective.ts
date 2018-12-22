@@ -12,6 +12,7 @@ import Sphere from "./GeometricObjects/Sphere";
 import Directional from "./Lights/Directional";
 import ViewPlane from "./World/ViewPlane";
 import Plane from "./GeometricObjects/Plane";
+import Phong from "./Materials/Phong";
 
 export default class MyWorldPerspective extends World {
   constructor() {
@@ -37,7 +38,7 @@ export default class MyWorldPerspective extends World {
     this.camera = myCamera;
 
     let light = new Directional();
-    light.set_direction(new Vector3D(100, 100, 200));
+    light.set_direction(new Vector3D(0, 0, 1));
     light.scale_radiance(3.0);
     this.lights.push(light);
 
@@ -50,8 +51,8 @@ export default class MyWorldPerspective extends World {
     // plane.material = matte1;
     // this.objects.push(plane);
 
-    let sphere = new Sphere("SphereBlue", new Point3D(0, 0, 0), 85);
-    let matte2 = new Matte();
+    let sphere = new Sphere("SphereBlue", new Point3D(0, 0, -50), 55);
+    let matte2 = new Phong();
     matte2.ambient_brdf.kd = 0.25;
     matte2.diffuse_brdf.kd = 0.75;
     matte2.set_cd(new RGBColor(0, 0, 1));

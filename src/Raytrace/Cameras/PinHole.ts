@@ -24,6 +24,7 @@ export default class PinHole extends Camera {
 
   prepare_scene(world: World, pixel_drawer: PixelDrawer): void {
     this.r = 0;
+    console.time("Camera:prepare_scene");
   }
   render_lines(world: World, pixel_drawer: PixelDrawer): void {
     let L: RGBColor;
@@ -66,6 +67,7 @@ export default class PinHole extends Camera {
           window.requestAnimationFrame(() =>
             this.render_lines(world, pixel_drawer)
           );
+        else console.timeEnd("Camera:prepare_scene");
         break;
       }
     }

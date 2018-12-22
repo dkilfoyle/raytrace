@@ -4,21 +4,24 @@ import Vector3D from "../Math/Vector3D";
 import Material from "./Material";
 import World from "../World/World";
 import Lambertian from "../BRDFs/Lambertian";
+import GlossySpecular from "../BRDFs/GlossySpecular";
 
-export default class Matte extends Material {
+export default class Phong extends Material {
   ambient_brdf: Lambertian;
   diffuse_brdf: Lambertian;
+  specular_brdf: GlossySpecular;
   constructor() {
     super();
     this.ambient_brdf = new Lambertian();
     this.diffuse_brdf = new Lambertian();
+    this.specular_brdf = new GlossySpecular();
   }
   set_cd(c: RGBColor): void {
     this.ambient_brdf.cd = c.clone();
     this.diffuse_brdf.cd = c.clone();
   }
   shade(w: World, sr: ShadeRec): RGBColor {
-    if (window.bDebug) console.group("Material Matte.shade: ", sr);
+    if (window.bDebug) console.group("Material Phong.shade: ", sr);
     const wo: Vector3D = sr.intersection.ray.d.clone().reverse();
     const L: RGBColor = this.ambient_brdf.rho(sr, wo).product(w.ambient.L(sr));
 
@@ -32,6 +35,7 @@ export default class Matte extends Material {
         L.add(
           this.diffuse_brdf
             .f(sr, wo, wi)
+            .add(this.specular_brdf.f(sr, wo, wi))
             .product(w.lights[j].L(sr))
             .multiply(ndotwi)
         );
