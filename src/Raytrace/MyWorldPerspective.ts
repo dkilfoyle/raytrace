@@ -47,11 +47,15 @@ export default class MyWorldPerspective extends World {
     matte1.diffuse_brdf.kd = 0.75;
     matte1.set_cd(new RGBColor(1, 1, 0));
 
-    // let plane = new Plane(new Point3D(0, 0, -175), new Vector3D(0, 0, 1));
-    // plane.material = matte1;
-    // this.objects.push(plane);
+    let plane = new Plane(
+      "GroundPlane",
+      new Point3D(0, -50, 0),
+      new Vector3D(0, 1, 0)
+    );
+    plane.material = matte1;
+    this.objects.push(plane);
 
-    let sphere = new Sphere("SphereBlue", new Point3D(0, 0, -50), 55);
+    let sphere = new Sphere("SphereBlue", new Point3D(0, 25, -50), 55);
     let matte2 = new Phong();
     matte2.ambient_brdf.kd = 0.25;
     matte2.diffuse_brdf.kd = 0.75;

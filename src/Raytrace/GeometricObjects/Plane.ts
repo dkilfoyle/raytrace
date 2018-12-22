@@ -7,8 +7,8 @@ import Vector3D from "../Math/Vector3D";
 export default class Plane extends GeometricObject {
   constructor(
     name: string = "Plane",
-    public a: Point3D = new Point3D(),
-    public n: Vector3D = new Vector3D()
+    public a: Point3D = new Point3D(0, 0, 0),
+    public n: Vector3D = new Vector3D(0, 1, 0)
   ) {
     super(name);
   }
