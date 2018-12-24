@@ -4,8 +4,8 @@ import Vector3D from "./Vector3D";
 export default class Ray {
   /**
    * 3D ray
-   * @param o origin
-   * @param d direction
+   * @param o:Point3D origin
+   * @param d:Vector3D direction
    */
   o: Point3D;
   d: Vector3D;

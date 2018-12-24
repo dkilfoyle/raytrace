@@ -45,6 +45,9 @@ export default abstract class World {
         if (window.bDebug) console.log("Intersection: ", sr.intersection);
         sr.intersection.cloneFrom(intersection);
         sr.intersection.ray = ray.clone();
+        sr.intersection.hit_point = ray.o
+          .clone()
+          .add(ray.d.clone().multiply(intersection.t));
         tmin = intersection.t;
         sr.material = this.objects[j].material;
       }

@@ -25,10 +25,7 @@ export default abstract class Camera {
   ): void;
 
   compute_uvw(): void {
-    this.w = this.eye
-      .clone()
-      .subtract(this.lookat)
-      .asVector3D();
+    this.w = this.eye.cloneVector().subtract(this.lookat);
     this.w.normalize();
     this.u = this.up.clone().crossProduct(this.w);
     this.u.normalize();

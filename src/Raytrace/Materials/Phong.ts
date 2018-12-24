@@ -5,6 +5,7 @@ import Material from "./Material";
 import World from "../World/World";
 import Lambertian from "../BRDFs/Lambertian";
 import GlossySpecular from "../BRDFs/GlossySpecular";
+import Ray from "../Math/Ray";
 
 export default class Phong extends Material {
   ambient_brdf: Lambertian;
@@ -30,15 +31,25 @@ export default class Phong extends Material {
       let ndotwi: number = sr.intersection.normal.dotProduct(wi);
 
       if (ndotwi > 0.0) {
-        if (window.bDebug)
-          console.log("Visible light: ", j, ", ndotwi: ", ndotwi);
-        L.add(
-          this.diffuse_brdf
-            .f(sr, wo, wi)
-            .add(this.specular_brdf.f(sr, wo, wi))
-            .product(w.lights[j].L(sr))
-            .multiply(ndotwi)
-        );
+        let in_shadow: boolean = false;
+
+        if (w.lights[j].casts_shadow) {
+          let shadowRay: Ray = new Ray(sr.intersection.hit_point, wi);
+          in_shadow = w.lights[j].in_shadow(w, shadowRay);
+        }
+
+        if (!in_shadow) {
+          if (window.bDebug) console.log("Visible light: ", wi, ndotwi);
+          L.add(
+            this.diffuse_brdf
+              .f(sr, wo, wi)
+              .add(this.specular_brdf.f(sr, wo, wi))
+              .product(w.lights[j].L(sr))
+              .multiply(ndotwi)
+          );
+        } else {
+          if (window.bDebug) console.log("Shadow Blocked light: ", w.lights[j]);
+        }
       }
     }
 

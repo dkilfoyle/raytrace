@@ -15,7 +15,7 @@ export default class Plane extends GeometricObject {
   hit(ray: Ray, intersection: Intersection): boolean {
     let t: number = this.a
       .cloneVector()
-      .subtract(ray.o.asVector3D())
+      .subtract(ray.o)
       .dotProduct(
         this.n.clone().divideScalar(ray.d.clone().dotProduct(this.n))
       );
@@ -27,11 +27,26 @@ export default class Plane extends GeometricObject {
       intersection.normal = this.n;
       intersection.local_hit_point = ray.o
         .clone()
-        .addVector(ray.d.clone().multiplyScalar(t));
+        .add(ray.d.clone().multiplyScalar(t));
 
       return true;
     }
 
     return false;
+  }
+  shadow_hit(ray: Ray): number {
+    if (!this.casts_shadow) return -1;
+    let t: number = this.a
+      .cloneVector()
+      .subtract(ray.o)
+      .dotProduct(
+        this.n.clone().divideScalar(ray.d.clone().dotProduct(this.n))
+      );
+
+    if (t > 0.00001) {
+      return t;
+    }
+
+    return -1;
   }
 }

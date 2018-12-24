@@ -13,6 +13,7 @@ import Directional from "./Lights/Directional";
 import ViewPlane from "./World/ViewPlane";
 import Plane from "./GeometricObjects/Plane";
 import Phong from "./Materials/Phong";
+import Point from "./Lights/Point";
 
 export default class MyWorldPerspective extends World {
   constructor() {
@@ -31,33 +32,34 @@ export default class MyWorldPerspective extends World {
     this.ambient = myAmbient;
 
     let myCamera = new PinHole();
-    myCamera.eye = new Point3D(0, 0, 500);
+    myCamera.eye = new Point3D(0, 0, 1500);
     myCamera.lookat = new Point3D(0, 0, 0);
     myCamera.d = 600.0;
     myCamera.compute_uvw();
     this.camera = myCamera;
 
-    let light = new Directional();
-    light.set_direction(new Vector3D(0, 0, 1));
+    let light = new Point(new Vector3D(0, 100, 0));
+    // light.set_direction(new Vector3D(0, -1, 0));
     light.scale_radiance(3.0);
     this.lights.push(light);
 
     let matte1 = new Matte();
-    matte1.ambient_brdf.kd = 0.25;
+    matte1.ambient_brdf.kd = 0.15;
     matte1.diffuse_brdf.kd = 0.75;
     matte1.set_cd(new RGBColor(1, 1, 0));
 
     let plane = new Plane(
       "GroundPlane",
-      new Point3D(0, -50, 0),
+      new Point3D(0, -30, 0),
       new Vector3D(0, 1, 0)
     );
     plane.material = matte1;
+    plane.casts_shadow = false;
     this.objects.push(plane);
 
     let sphere = new Sphere("SphereBlue", new Point3D(0, 25, -50), 55);
     let matte2 = new Phong();
-    matte2.ambient_brdf.kd = 0.25;
+    matte2.ambient_brdf.kd = 0.15;
     matte2.diffuse_brdf.kd = 0.75;
     matte2.set_cd(new RGBColor(0, 0, 1));
     sphere.material = matte2;

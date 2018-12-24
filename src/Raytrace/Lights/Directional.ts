@@ -2,6 +2,8 @@ import Light from "./Light";
 import RGBColor from "../Math/RGBColor";
 import Vector3D from "../Math/Vector3D";
 import ShadeRec from "../Math/ShadeRec";
+import World from "../World/World";
+import Ray from "../Math/Ray";
 
 export default class Directional extends Light {
   ls: number;
@@ -24,6 +26,15 @@ export default class Directional extends Light {
     return this.color.clone().multiply(this.ls);
   }
   get_direction(sr: ShadeRec): Vector3D {
-    return this.dir;
+    return this.dir.clone();
+  }
+  in_shadow(w: World, shadowRay: Ray): boolean {
+    if (!this.casts_shadow) return false;
+    let t: number;
+    for (let j = 0; j < w.objects.length; j++) {
+      let t = w.objects[j].shadow_hit(shadowRay);
+      if (t > 0) return true;
+    }
+    return false;
   }
 }

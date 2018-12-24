@@ -12,12 +12,10 @@ export default class Sphere extends GeometricObject {
     this.center = center.clone();
     this.radius = radius;
   }
+
   hit(ray: Ray, intersection: Intersection): boolean {
     let t: number;
-    let rtoc: Vector3D = ray.o
-      .clone()
-      .subtract(this.center)
-      .asVector3D();
+    let rtoc: Vector3D = ray.o.cloneVector().subtract(this.center);
     let a: number = ray.d.dotProduct(ray.d);
     let b: number = 2.0 * rtoc.dotProduct(ray.d);
     let c: number = rtoc.dotProduct(rtoc) - this.radius * this.radius;
@@ -40,7 +38,7 @@ export default class Sphere extends GeometricObject {
           .multiplyScalar(1.0 / this.radius);
         intersection.local_hit_point = ray.o
           .clone()
-          .addVector(ray.d.clone().multiplyScalar(t));
+          .add(ray.d.clone().multiplyScalar(t));
         return true;
       }
 
@@ -57,11 +55,37 @@ export default class Sphere extends GeometricObject {
           .multiplyScalar(1.0 / this.radius);
         intersection.local_hit_point = ray.o
           .clone()
-          .addVector(ray.d.clone().multiplyScalar(t));
+          .add(ray.d.clone().multiplyScalar(t));
         return true;
       }
     }
 
     return false;
+  }
+
+  shadow_hit(ray: Ray): number {
+    if (!this.casts_shadow) return -1;
+    let t: number;
+    let rtoc: Vector3D = ray.o.cloneVector().subtract(this.center);
+    let a: number = ray.d.dotProduct(ray.d);
+    let b: number = 2.0 * rtoc.dotProduct(ray.d);
+    let c: number = rtoc.dotProduct(rtoc) - this.radius * this.radius;
+    let disc: number = b * b - 4.0 * a * c;
+
+    if (disc < 0.0) return -1;
+    let e: number = Math.sqrt(disc);
+    let denom: number = 2.0 * a;
+
+    t = (-b - e) / denom; // smaller root
+    if (t > 0.0001) {
+      return t;
+    }
+
+    t = (-b + e) / denom; // larger root
+    if (t > 0.0001) {
+      return t;
+    }
+
+    return -1;
   }
 }

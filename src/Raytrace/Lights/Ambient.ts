@@ -2,6 +2,8 @@ import Light from "./Light";
 import RGBColor from "../Math/RGBColor";
 import Vector3D from "../Math/Vector3D";
 import ShadeRec from "../Math/ShadeRec";
+import Ray from "../Math/Ray";
+import World from "../World/World";
 
 export default class Ambient extends Light {
   ls: number;
@@ -19,5 +21,8 @@ export default class Ambient extends Light {
   }
   get_direction(sr: ShadeRec): Vector3D {
     return new Vector3D(0, 0, 0);
+  }
+  in_shadow(w: World, shadowRay: Ray): boolean {
+    throw new Error("Method not implemented.");
   }
 }

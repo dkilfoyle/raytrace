@@ -42,7 +42,11 @@ export default class App extends Vue {
     this.myWorld.render_scene(this.$refs.imageCanvas);
   }
   onImageClick(e: MouseEvent) {
-    this.myWorld.render_pixel(this.$refs.imageCanvas, e.offsetX, e.offsetY);
+    this.myWorld.render_pixel(
+      this.$refs.imageCanvas,
+      e.offsetX,
+      this.$refs.imageCanvas.h - e.offsetY - 1
+    );
   }
 }
 </script>
