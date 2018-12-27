@@ -82,6 +82,17 @@ export default abstract class Sampler {
     ];
   }
 
+  sample_hemisphere(): Point3D {
+    if (this.count % this.num_samples == 0)
+      // start of a new pixel
+      this.jump = rand_int(this.num_sets) * this.num_samples;
+
+    return this.hemisphere_samples[
+      this.jump +
+        this.shuffled_indices[this.jump + (this.count++ % this.num_samples)]
+    ];
+  }
+
   // Maps the 2D sample points in the square [-1,1] X [-1,1] to a unit disk, using Peter Shirley's concentric map function
 
   map_samples_to_unit_disk(): void {

@@ -24,7 +24,9 @@ export default class Phong extends Material {
   shade(w: World, sr: ShadeRec): RGBColor {
     if (window.bDebug) console.group("Material Phong.shade: ", sr);
     const wo: Vector3D = sr.intersection.ray.d.clone().reverse();
-    const L: RGBColor = this.ambient_brdf.rho(sr, wo).product(w.ambient.L(sr));
+    const L: RGBColor = this.ambient_brdf
+      .rho(sr, wo)
+      .product(w.ambient.L(w, sr));
 
     for (let j = 0; j < w.lights.length; j++) {
       let wi: Vector3D = w.lights[j].get_direction(sr);
@@ -44,7 +46,7 @@ export default class Phong extends Material {
             this.diffuse_brdf
               .f(sr, wo, wi)
               .add(this.specular_brdf.f(sr, wo, wi))
-              .product(w.lights[j].L(sr))
+              .product(w.lights[j].L(w, sr))
               .multiply(ndotwi)
           );
         } else {

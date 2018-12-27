@@ -22,7 +22,7 @@ export default class Directional extends Light {
   scale_radiance(b: number): void {
     this.ls = b;
   }
-  L(s: ShadeRec) {
+  L(w: World, s: ShadeRec) {
     return this.color.clone().multiply(this.ls);
   }
   get_direction(sr: ShadeRec): Vector3D {

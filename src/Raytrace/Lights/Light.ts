@@ -9,5 +9,5 @@ export default abstract class Light {
   constructor() {}
   abstract in_shadow(w: World, shadowRay: Ray): boolean;
   abstract get_direction(sr: ShadeRec): Vector3D;
-  abstract L(sr: ShadeRec): RGBColor;
+  abstract L(w: World, sr: ShadeRec): RGBColor;
 }

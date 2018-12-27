@@ -14,6 +14,8 @@ import ViewPlane from "./World/ViewPlane";
 import Plane from "./GeometricObjects/Plane";
 import Phong from "./Materials/Phong";
 import Point from "./Lights/Point";
+import MultiJittered from "./Samplers/MultiJittered";
+import AmbientOccluder from "./Lights/AmbientOccluder";
 
 export default class MyWorldPerspective extends World {
   constructor() {
@@ -27,8 +29,11 @@ export default class MyWorldPerspective extends World {
     this.background_color = new RGBColor(0.1, 0.1, 0.1);
     this.tracer = new RayCast();
 
-    let myAmbient = new Ambient();
+    let myAmbient = new AmbientOccluder(new MultiJittered(256));
     myAmbient.scale_radiance(1.0);
+    myAmbient.min_amount = 0.0;
+    myAmbient.color = new RGBColor(0, 0, 0);
+
     this.ambient = myAmbient;
 
     let myCamera = new PinHole();
